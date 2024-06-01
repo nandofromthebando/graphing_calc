@@ -46,14 +46,24 @@ class Calculator(App):
         self.process_input(instance.text)
 
     def on_key_down(self, instance, keyboard, keycode, text, modifiers):
+        print(f"Key pressed - keycode: {keycode}, text: {text}, scancode: {keyboard}")
         if text.isdigit() or text in self.operators or text in "()^.":
             self.process_input(text)
-        elif keycode == 40:  # Enter key
+        elif keycode == 13:  # Enter key
             self.process_input('=')
-        elif keycode == 42:  # Backspace key
+        elif keycode == 8:  # Backspace key
             self.solution.text = self.solution.text[:-1]
-        elif keycode == 46:  # C key for clearing input
+        elif keycode in [46, 67]:  # C key for clearing input (main keyboard and numpad)
             self.solution.text = ''
+        else:
+            numpad_keys = {
+                89: '1', 90: '2', 91: '3',
+                83: '4', 84: '5', 85: '6',
+                79: '7', 80: '8', 81: '9',
+                82: '0', 86: '.', 55: '*', 74: '-', 78: '+', 98: '/', 96: '='
+            }
+            if keycode in numpad_keys:
+                self.process_input(numpad_keys[keycode])
 
     def process_input(self, input_text):
         current = self.solution.text
