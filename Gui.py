@@ -88,21 +88,25 @@ class Calculator(App):
         elif input_text == '=':
             try:
                 print(f"Current: {current}")
+                # Replace custom symbols with Python equivalents
                 expression = current.replace('^', '**').replace('sqrt', 'math.sqrt')
                 for func in ['sin', 'cos', 'tan']:
                     expression = expression.replace(func, f'math.{func}')
                 print(f"Expression: {expression}")
+                
+                # Evaluate the expression
                 result = str(eval(expression))
                 self.solution.text = result
             except ZeroDivisionError:
                 self.solution.text = 'Error: Division by zero'
             except Exception as e:
-                print(f"Exception: {e}")  # Add this
+                print(f"Exception: {e}")
                 self.solution.text = 'Error: Invalid input'
-
         else:
+            # Prevent invalid input like starting with an operator
             if current == '' and input_text in self.operators:
                 return
+            # Prevent multiple consecutive operators
             elif current and self.last_was_operator and input_text in self.operators:
                 return
             else:
@@ -111,6 +115,7 @@ class Calculator(App):
 
         self.last_button = input_text
         self.last_was_operator = input_text in self.operators
+
 
     def backspace(self):
         # Remove the last character from the TextInput
