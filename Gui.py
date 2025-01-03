@@ -58,7 +58,7 @@ class Calculator(App):
         self.process_input(instance.text)
 
     def on_key_down(self, instance, keyboard, keycode, text, modifiers):
-        print(f"Key down event: keycode={keycode}, text={text}, modifiers={modifiers}")
+
         if text is not None:  # Check if text is not None
             if text.isdigit() or text in self.operators or text in "()^.":
                 self.process_input(text)
@@ -87,12 +87,10 @@ class Calculator(App):
             self.backspace()
         elif input_text == '=':
             try:
-                print(f"Current: {current}")
                 # Replace custom symbols with Python equivalents
                 expression = current.replace('^', '**').replace('sqrt', 'math.sqrt')
-                for func in ['sin', 'cos', 'tan']:
+                for func in ['sin', 'cos', 'tan', 'log']:
                     expression = expression.replace(func, f'math.{func}')
-                print(f"Expression: {expression}")
                 
                 # Evaluate the expression
                 result = str(eval(expression))
@@ -121,5 +119,6 @@ class Calculator(App):
         # Remove the last character from the TextInput
         if self.solution.text:
             self.solution.text = self.solution.text[:-1]
+
 if __name__ == '__main__':
     Calculator().run()
