@@ -114,6 +114,9 @@ class Calculator(App):
 
         self.last_button = input_text
         self.last_was_operator = input_text in self.operators
-
+    def backspace(self):
+        # Remove the last character from the TextInput
+        if self.solution.text:
+            self.solution.text = self.solution.text[:-1]
 if __name__ == '__main__':
     Calculator().run()
