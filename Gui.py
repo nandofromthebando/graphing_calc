@@ -59,15 +59,16 @@ class Calculator(App):
         self.process_input(instance.text)
 
     def on_key_down(self, instance, keyboard, keycode, text, modifiers):
+        print(f"Key down event: keycode={keycode}, text={text}, modifiers={modifiers}")
         if text is not None:  # Check if text is not None
             if text.isdigit() or text in self.operators or text in "()^.":
                 self.process_input(text)
-        elif keycode == 13:  # Enter key
+        elif keycode == 40:  # Enter key
             self.process_input('=')
-        elif keycode == 8:  # Backspace key
-            self.backspace()
-        elif keycode in [46, 67]:  # C key for clearing input
-            self.solution.text = ''
+        elif keycode == 42:  # Backspace key
+            self.process_input('DEL')
+        elif keycode == 6:  # C key for clearing input
+            self.process_input('C')
         else:
             numpad_keys = {
                 89: '1', 90: '2', 91: '3',
