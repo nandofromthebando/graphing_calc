@@ -15,7 +15,6 @@ class Calculator(App):
         self.operators = ["/", "*", "-", "+", "^"]
         self.last_was_operator = None
         self.last_button = None
-        self.history = []
 
         main_layout = BoxLayout(orientation='vertical', padding=10, spacing=10)
 
@@ -88,21 +87,19 @@ class Calculator(App):
             self.backspace()
         elif input_text == '=':
             try:
-                # Replace custom symbols with Python equivalents
-                expression = current.replace('^', '**')
-                expression = expression.replace('sqrt', 'math.sqrt')
+                print(f"Current: {current}")
+                expression = current.replace('^', '**').replace('sqrt', 'math.sqrt')
                 for func in ['sin', 'cos', 'tan']:
                     expression = expression.replace(func, f'math.{func}')
-                
-                # Evaluate the expression
+                print(f"Expression: {expression}")
                 result = str(eval(expression))
-                self.history.append(f"{current} = {result}")
-                self.update_history()
                 self.solution.text = result
             except ZeroDivisionError:
                 self.solution.text = 'Error: Division by zero'
             except Exception as e:
+                print(f"Exception: {e}")  # Add this
                 self.solution.text = 'Error: Invalid input'
+
         else:
             if current == '' and input_text in self.operators:
                 return
@@ -114,6 +111,7 @@ class Calculator(App):
 
         self.last_button = input_text
         self.last_was_operator = input_text in self.operators
+
     def backspace(self):
         # Remove the last character from the TextInput
         if self.solution.text:
