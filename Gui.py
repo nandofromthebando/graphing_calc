@@ -32,9 +32,10 @@ class Calculator(App):
             '7', '8', '9', '/',
             '4', '5', '6', '*',
             '1', '2', '3', '-',
-            '.', '0', 'C', '+',
+            '.', '0', 'Clear', '+',
             '(', ')', '^', '=',
             'sin', 'cos', 'tan', 'sqrt',
+            'Backspace'
         ]
         for button in buttons:
             buttons_layout.add_widget(self.create_button(button))
@@ -49,7 +50,7 @@ class Calculator(App):
             text=text,
             pos_hint={"center_x": 0.5, "center_y": 0.5},
             font_size=24,
-            background_color=(0.1, 0.5, 0.8, 1) if text in self.operators else (0.2, 0.8, 0.2, 1),
+            background_color=(0.3, 0.3, 0.3, 1),
             on_press=self.on_button_press
         )
         return button
@@ -63,7 +64,7 @@ class Calculator(App):
         elif keycode == 13:  # Enter key
             self.process_input('=')
         elif keycode == 8:  # Backspace key
-            self.solution.text = self.solution.text[:-1]
+            self.backspace()
         elif keycode in [46, 67]:  # C key for clearing input
             self.solution.text = ''
         else:
@@ -81,6 +82,8 @@ class Calculator(App):
 
         if input_text == 'c':
             self.solution.text = ''
+        elif input_text == 'Backspace':
+            self.backspace()
         elif input_text == '=':
             try:
                 expression = current.replace('^', '**')
@@ -107,6 +110,9 @@ class Calculator(App):
 
         self.last_button = input_text
         self.last_was_operator = self.last_button in self.operators
+
+    def backspace(self):
+        self.solution.text = self.solution.text[:-1]
 
     def update_history(self):
         self.history_label.text = "\n".join(self.history[-5:])
