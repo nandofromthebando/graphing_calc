@@ -91,6 +91,7 @@ class Calculator(App):
                 expression = current.replace('^', '**').replace('sqrt', 'math.sqrt')
                 for func in ['sin', 'cos', 'tan', 'log']:
                     expression = expression.replace(func, f'math.{func}')
+                expression = expression.replace('%', '/100')
                 
                 # Evaluate the expression
                 result = str(eval(expression))
